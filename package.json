@@ -1,0 +1,14 @@
+{
+  "name": "mikrotik",
+  "version": "1.0.0",
+  "description": "Aplicación para comunicar y trabajar con un mikrotik",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mikronode": "^2.3.11"
+  }
+}
