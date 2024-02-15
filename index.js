@@ -1,6 +1,8 @@
-var MikroNode = require("mikronode");
+var MikroNode = require("mikronode2");
 
 var device = new MikroNode("192.168.4.10");
+var objectTest = { name: "jonatha", apellido: "La Concha" };
+console.log("Objeto de prueba: " + JSON.stringify(objectTest));
 
 device
 	.connect()
@@ -8,30 +10,22 @@ device
 		return login("admin", "Mypasspcit");
 	})
 	.then(function (conn) {
-		var chan = conn.openChannel("addresses"); // open a named channel
-		//var chan2=conn.openChannel("firewall_connections",true); // open a named channel, turn on "closeOnDone"
-
+		console.log("Conexión establecida");
+		var chan = conn.openChannel();
 		chan.write("/ip/address/print");
-
 		chan.on("done", function (data) {
 			// data is all of the sentences in an array.
-			data.forEach(function (item) {
-				console.log(
-					"Interface/IP: " + item.data.interface + "/" + item.data.address
-				);
+			console.log("Estos es data:", data.data);
+			data.data.forEach(function (item) {
+				console.log(item);
+
+				console.log("Interface/IP: " + item.interface + "/" + item.address);
 			});
 
 			chan.close(); // close the channel. It is not autoclosed by default.
 			conn.close(); // when closing connection, the socket is closed and program ends.
 		});
-
-		chan.write("/ip/firewall/print");
-
-		chan.done.subscribe(function (data) {
-			// data is all of the sentences in an array.
-			data.forEach(function (item) {
-				var data = MikroNode.resultsToObj(item.data); // convert array of field items to object.
-				console.log("Interface/IP: " + data.interface + "/" + data.address);
-			});
-		});
+	})
+	.catch((error) => {
+		console.log("Caught error:", error);
 	});
