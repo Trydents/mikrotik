@@ -15,11 +15,15 @@ device
 
 		chan.write("/ip/address/print");
 		chan.on("done", function (data) {
+			let parsedDataArray = new Array();
 			// data is all of the sentences in an array.
 			data.data.forEach(function (item) {
-				parseMIkrotikSystem(item);
+				let parsedData = parseMIkrotikSystem(item);
 
-				console.log("Interface/IP: " + item.interface + "/" + item.address);
+				parsedDataArray.push(parsedData);
+				console.log(
+					"Interface/IP: " + parsedData.interface + "/" + parsedData.address
+				);
 			});
 
 			chan.close(); // close the channel. It is not autoclosed by default.
